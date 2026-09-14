@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lab_game</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body class="light-theme">
+  <header class="header">
+    <div class="logo">
+      <span class="logo-icon">🧪</span>
+      <span class="logo-text">Lab_game</span>
+    </div>
+    <nav class="nav">
+      <a href="#" class="nav-link active" data-page="home">Главная</a>
+      <a href="#" class="nav-link" data-page="catalog">Каталог игр</a>
+      <a href="#" class="nav-link" data-page="create" id="create-link" style="display:none;">Создать игру</a>
+      <a href="#" class="nav-link" data-page="my-games" id="my-games-link" style="display:none;">Мои игры</a>
+    </nav>
+    <div class="header-actions">
+      <button id="theme-toggle" class="theme-btn" title="Сменить тему">🌙</button>
+      <div id="auth-buttons">
+        <button id="login-btn" class="btn btn-outline">Вход</button>
+        <button id="register-btn" class="btn btn-primary">Регистрация</button>
+      </div>
+      <div id="user-info" style="display:none;">
+        <span id="username-display"></span>
+        <button id="logout-btn" class="btn btn-outline">Выйти</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Главная -->
+    <section id="page-home" class="page active">
+      <div class="hero">
+        <h1>Добро пожаловать в Lab_game</h1>
+        <p>Все игры Яндекс Игр + возможность создавать свои собственные игры</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary btn-lg" data-page="catalog">Смотреть каталог</button>
+          <button class="btn btn-outline btn-lg" id="hero-create" style="display:none;" data-page="create">Создать игру</button>
+        </div>
+      </div>
+      <div class="features">
+        <div class="feature-card">
+          <div class="feature-icon">🎮</div>
+          <h3>Каталог Яндекс Игр</h3>
+          <p>Тысячи игр в одном месте. Играй прямо в браузере.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>Создание с ИИ</h3>
+          <p>Опиши идею — искусственный интеллект создаст игру за тебя.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧩</div>
+          <h3>Сборка вручную</h3>
+          <p>Собери игру из готовых блоков и частей сам.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📢</div>
+          <h3>Публикация</h3>
+          <p>Опубликуй свою игру — её увидят все пользователи сайта.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Каталог -->
+    <section id="page-catalog" class="page">
+      <h2>Каталог игр</h2>
+      <div class="filters">
+        <input type="text" id="search-games" placeholder="Поиск игр..." class="search-input">
+        <select id="category-filter" class="filter-select">
+          <option value="all">Все категории</option>
+          <option value="action">Экшен</option>
+          <option value="puzzle">Головоломки</option>
+          <option value="arcade">Аркады</option>
+          <option value="strategy">Стратегии</option>
+          <option value="user">Пользовательские</option>
+        </select>
+      </div>
+      <div id="games-grid" class="games-grid"></div>
+    </section>
+
+    <!-- Создание игры -->
+    <section id="page-create" class="page">
+      <h2>Создать свою игру</h2>
+      <div class="create-tabs">
+        <button class="tab-btn active" data-tab="ai">С помощью ИИ</button>
+        <button class="tab-btn" data-tab="manual">Собрать вручную</button>
+      </div>
+
+      <div id="tab-ai" class="tab-content active">
+        <div class="create-form">
+          <label>Опиши свою игру</label>
+          <textarea id="ai-prompt" rows="5" placeholder="Например: простая игра в стиле Flappy Bird, где птичка летает между трубами..."></textarea>
+          <label>Название игры</label>
+          <input type="text" id="ai-title" placeholder="Название">
+          <button id="generate-ai-btn" class="btn btn-primary">Сгенерировать игру с ИИ</button>
+          <div id="ai-result" class="result-box" style="display:none;"></div>
+        </div>
+      </div>
+
+      <div id="tab-manual" class="tab-content">
+        <div class="create-form">
+          <label>Название игры</label>
+          <input type="text" id="manual-title" placeholder="Название">
+          <label>Описание</label>
+          <textarea id="manual-desc" rows="3" placeholder="Краткое описание"></textarea>
+          <label>Категория</label>
+          <select id="manual-category">
+            <option value="action">Экшен</option>
+            <option value="puzzle">Головоломки</option>
+            <option value="arcade">Аркады</option>
+            <option value="strategy">Стратегии</option>
+          </select>
+          <label>Собери игру из блоков</label>
+          <div class="blocks-builder">
+            <div class="block-options">
+              <button class="block-btn" data-block="player">Игрок</button>
+              <button class="block-btn" data-block="enemy">Враг</button>
+              <button class="block-btn" data-block="platform">Платформа</button>
+              <button class="block-btn" data-block="coin">Монета</button>
+              <button class="block-btn" data-block="obstacle">Препятствие</button>
+              <button class="block-btn" data-block="finish">Финиш</button>
+            </div>
+            <div id="selected-blocks" class="selected-blocks"></div>
+          </div>
+          <button id="create-manual-btn" class="btn btn-primary">Создать игру</button>
+          <div id="manual-result" class="result-box" style="display:none;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Мои игры -->
+    <section id="page-my-games" class="page">
+      <h2>Мои созданные игры</h2>
+      <div id="my-games-list" class="games-grid"></div>
+    </section>
+  </main>
+
+  <!-- Модальные окна -->
+  <div id="auth-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 id="auth-title">Вход</h2>
+      <form id="auth-form">
+        <input type="text" id="auth-username" placeholder="Имя пользователя" required>
+        <input type="password" id="auth-password" placeholder="Пароль" required>
+        <button type="submit" class="btn btn-primary" id="auth-submit">Войти</button>
+      </form>
+      <p id="auth-switch">Нет аккаунта? <a href="#" id="switch-to-register">Зарегистрироваться</a></p>
+    </div>
+  </div>
+
+  <div id="game-modal" class="modal">
+    <div class="modal-content game-modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 id="game-modal-title"></h2>
+      <div id="game-frame" class="game-frame">
+        <p>Игра загружается...</p>
+        <div class="game-placeholder">🎮</div>
+        <p id="game-desc"></p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 Lab_game · Все игры Яндекс Игр + пользовательский контент</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
